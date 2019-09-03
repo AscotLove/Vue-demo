@@ -1,7 +1,7 @@
 <template>
   <div id="#app">
     <div class="todo-container">
-      <todo-header></todo-header>
+      <todo-header @addTodo="addTodo"></todo-header>
       <todo-list :todos="todos">
         <template slot-scope="obj">
           <input type="checkbox" v-model="obj.checked">
@@ -31,6 +31,11 @@
 
 
       }
+    },
+    methods: {
+      addTodo(todo) {
+        this.todos.unshift(todo)
+      },
     },
     components: {
       'todo-header': Header,

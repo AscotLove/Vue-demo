@@ -1,12 +1,33 @@
 <template>
   <div class="todo-header">
-    <input type="text">
+    <input type="text" v-model="msg" @keydown.enter="addTodo">
   </div>
 </template>
 
 <script>
   export default {
-    name: "Header"
+    name: "Header",
+    data() {
+      return {
+        msg: '',
+        id: 3,
+      }
+    },
+    methods: {
+      addTodo() {
+        let todo = null;
+        if (this.msg) {
+          todo = {
+            id: ++this.id,
+            text: this.msg,
+            checked: false
+          }
+          this.$emit('addTodo', todo)
+        }
+       this.msg = ''
+      }
+    },
+
   }
 </script>
 
