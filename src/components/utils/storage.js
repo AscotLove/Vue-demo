@@ -1,5 +1,5 @@
-function getItem(todo) {
-  JSON.parse(localStorage.getItem(todo))
+function getItem(todos) {
+  return JSON.parse(localStorage.getItem(todos))
 };
 
 function setItem(todo) {

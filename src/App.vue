@@ -1,7 +1,7 @@
 <template>
   <div id="#app">
     <div class="todo-container">
-      <todo-header @addTodo="addTodo"></todo-header>
+      <todo-header @addTodo="addTodo" v-model="todos"></todo-header>
       <todo-list :todos="todos">
         <template slot-scope="obj">
           <input type="checkbox" v-model="obj.checked">
@@ -16,26 +16,34 @@
   import Header from './components/Header';
   import List from './components/List';
   import Footer from './components/Footer';
+  import { getItem, setItem } from './components/utils/storage';
+  import { subscribe } from 'pubsub-js';
 
   export default {
     name: "App",
     data() {
+      var todosString = getItem("todos");
       return {
-        todos: [
-          {
-            id: 1,
-            text: 'sdfsdf',
-            checkec: false
-          }
-        ]
-
-
+        todos: todosString ? todosString : []
       }
+    },
+    created() {
+      subscribe('delTodo', (msg, data) => {
+        this.todos = this.todos.filter((item) => item.id !== data)
+      })
     },
     methods: {
       addTodo(todo) {
         this.todos.unshift(todo)
       },
+    },
+    watch: {
+      todos: {
+        handler(newVal) {
+          setItem(newVal)
+        },
+        deep: true
+      }
     },
     components: {
       'todo-header': Header,

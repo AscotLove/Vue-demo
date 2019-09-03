@@ -4,11 +4,13 @@
       <input type="checkbox">
     </slot>
     {{todo.text}}
-    <button>删除</button>
+    <button @click="delTodo">删除</button>
   </li>
 </template>
 
 <script>
+  import { publish } from 'pubsub-js';
+
   export default {
     name: "Item",
     props: {
@@ -16,7 +18,11 @@
         type: Object,
       }
     },
-
+    methods: {
+      delTodo() {
+        publish('delTodo', this.todo.id)
+      }
+    },
   }
 </script>
 
