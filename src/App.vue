@@ -2,7 +2,11 @@
   <div id="#app">
     <div class="todo-container">
       <todo-header></todo-header>
-      <todo-list></todo-list>
+      <todo-list :todos="todos">
+        <template slot-scope="obj">
+          <input type="checkbox" v-model="obj.checked">
+        </template>
+      </todo-list>
       <todo-footer></todo-footer>
     </div>
   </div>
@@ -15,6 +19,19 @@
 
   export default {
     name: "App",
+    data() {
+      return {
+        todos: [
+          {
+            id: 1,
+            text: 'sdfsdf',
+            checkec: false
+          }
+        ]
+
+
+      }
+    },
     components: {
       'todo-header': Header,
       'todo-list': List,
@@ -29,6 +46,7 @@
     width: 600px;
     margin: 0 auto;
   }
+
   .todo-container .todo-wrap {
     padding: 10px;
     border: 1px solid #ddd;

@@ -1,17 +1,30 @@
 <template>
-  
+  <li>
+    <slot>
+      <input type="checkbox">
+    </slot>
+    {{todo.text}}
+    <button>删除</button>
+  </li>
 </template>
 
 <script>
   export default {
-    name: "Item"
+    name: "Item",
+    props: {
+      todo: {
+        type: Object,
+      }
+    },
+
   }
 </script>
 
 <style scoped>
-  li.highlight{
+  li.highlight {
     background: pink;
   }
+
   li {
     list-style: none;
     height: 36px;
