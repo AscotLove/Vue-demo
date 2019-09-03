@@ -7,7 +7,7 @@
           <input type="checkbox" v-model="obj.checked">
         </template>
       </todo-list>
-      <todo-footer></todo-footer>
+      <todo-footer :todos="todos" @delTodo="delTodo" @checkAll="checkAll"></todo-footer>
     </div>
   </div>
 </template>
@@ -22,20 +22,22 @@
   export default {
     name: "App",
     data() {
-      var todosString = getItem("todos");
+      const todosString = getItem("todos");
       return {
-        todos: todosString ? todosString : []
+        todos: todosString ? todosString : [],
       }
     },
-    created() {
-      subscribe('delTodo', (msg, data) => {
-        this.todos = this.todos.filter((item) => item.id !== data)
-      })
-    },
+
     methods: {
       addTodo(todo) {
         this.todos.unshift(todo)
       },
+      delTodo() {
+        this.todos = this.todos.filter((item) => !item.checked)
+      },
+      checkAll(val) {
+        this.todos.forEach((item) => item.checked = val)
+      }
     },
     watch: {
       todos: {
@@ -49,8 +51,17 @@
       'todo-header': Header,
       'todo-list': List,
       'todo-footer': Footer,
-
-    }
+    },
+    mounted() {
+      subscribe('delTodo', (msg, id) => {
+        this.todos = this.todos.filter((item) => item.id !== id)
+      });
+      subscribe('checkedChange', (msg, {id, checked}) => {
+        this.todos.forEach((item) => {
+          if (item.id === id) item.checked = checked
+        })
+      })
+    },
   }
 </script>
 

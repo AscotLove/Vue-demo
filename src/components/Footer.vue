@@ -1,10 +1,45 @@
 <template>
-  
+  <div class="todo-footer">
+    <input type="checkbox" v-model="checkAll">
+    <span>
+      已完成{{ completedTodo}} /全部{{todos.length}}
+    </span>
+    <button @click="delTodo">清除已完成任务</button>
+  </div>
 </template>
 
 <script>
+  import { publish } from 'pubsub-js';
+
   export default {
-    name: "Footer"
+    name: "Footer",
+    props: {
+      todos: {
+        type: Array,
+      }
+    },
+
+    computed: {
+      completedTodo() {
+        return this.todos.reduce((add, curr) => {
+          return add + (curr.checked ? 1: 0)
+        },0)
+      },
+      checkAll: {
+        get() {
+           if (this.todos.length) return this.completedTodo === this.todos.length
+        },
+        set(newVal) {
+          this.$emit('checkAll', newVal)
+        }
+      }
+    },
+    methods: {
+      delTodo() {
+        this.$emit('delTodo')
+      }
+    },
+
   }
 </script>
 

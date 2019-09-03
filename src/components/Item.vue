@@ -1,7 +1,7 @@
 <template>
   <li>
     <slot>
-      <input type="checkbox">
+      <input type="checkbox" v-model="checked">
     </slot>
     {{todo.text}}
     <button @click="delTodo">删除</button>
@@ -18,12 +18,27 @@
         type: Object,
       }
     },
+
+    computed: {
+
+      checked: {
+        get() {
+          return this.todo.checked
+        },
+        set(newVal) {
+          publish('checkedChange', {id: this.todo.id, checked: newVal})
+        }
+      }
+
+    },
     methods: {
       delTodo() {
         publish('delTodo', this.todo.id)
       }
     },
+
   }
+
 </script>
 
 <style scoped>

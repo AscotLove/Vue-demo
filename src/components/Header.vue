@@ -5,12 +5,13 @@
 </template>
 
 <script>
+  import { getItem } from './utils/storage';
   export default {
     name: "Header",
     data() {
       return {
         msg: '',
-        id: 3,
+        id: getItem("todoId") || 0,
       }
     },
     methods: {
