@@ -2,11 +2,7 @@
   <div id="#app">
     <div class="todo-container">
       <todo-header @addTodo="addTodo" v-model="todos"></todo-header>
-      <todo-list :todos="todos">
-        <template slot-scope="obj">
-          <input type="checkbox" v-model="obj.checked">
-        </template>
-      </todo-list>
+      <todo-list :todos="todos"></todo-list>
       <todo-footer :todos="todos" @delTodo="delTodo" @checkAll="checkAll"></todo-footer>
     </div>
   </div>
@@ -27,7 +23,11 @@
         todos: todosString ? todosString : [],
       }
     },
-
+    components: {
+      'todo-header': Header,
+      'todo-list': List,
+      'todo-footer': Footer,
+    },
     methods: {
       addTodo(todo) {
         this.todos.unshift(todo)
@@ -36,21 +36,21 @@
         this.todos = this.todos.filter((item) => !item.checked)
       },
       checkAll(val) {
-        this.todos.forEach((item) => item.checked = val)
+        this.todos.forEach((item) => item.checked = val);
       }
     },
     watch: {
       todos: {
         handler(newVal) {
-          setItem(newVal)
+          setItem("todos",newVal);
+          if (this.todos.length) {
+            setItem("todoId", newVal[length].id)
+          } else {
+            setItem("todoId", 0)
+          }
         },
         deep: true
       }
-    },
-    components: {
-      'todo-header': Header,
-      'todo-list': List,
-      'todo-footer': Footer,
     },
     mounted() {
       subscribe('delTodo', (msg, id) => {

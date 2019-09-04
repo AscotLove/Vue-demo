@@ -1,9 +1,13 @@
 <template>
   <li>
-    <slot>
-      <input type="checkbox" v-model="checked">
-    </slot>
-    {{todo.text}}
+    <label>
+      <slot name="inputSlot" :index="index" :id="todo.id">
+        <input type="checkbox" v-model="checked">
+      </slot>
+      <slot name="spanSlot" :text="todo.text">
+        {{todo.text}}
+      </slot>
+    </label>
     <button @click="delTodo">删除</button>
   </li>
 </template>
@@ -16,11 +20,11 @@
     props: {
       todo: {
         type: Object,
+        index: Number,
       }
     },
 
     computed: {
-
       checked: {
         get() {
           return this.todo.checked
@@ -29,7 +33,6 @@
           publish('checkedChange', {id: this.todo.id, checked: newVal})
         }
       }
-
     },
     methods: {
       delTodo() {

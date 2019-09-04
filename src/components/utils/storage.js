@@ -2,8 +2,8 @@ function getItem(todos) {
   return JSON.parse(localStorage.getItem(todos))
 };
 
-function setItem(todo) {
-  localStorage.setItem("todos", JSON.stringify(todo))
+function setItem(key,val) {
+  localStorage.setItem(key, JSON.stringify(val))
 };
 
 export {

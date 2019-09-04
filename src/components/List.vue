@@ -1,8 +1,15 @@
 <template>
-  <transition-group tag="ul" class="todo-main" v-on:before-enter="beforeEnter"
-                    v-on:enter="enter"
-                    v-on:leave="leave">
-    <todo-item v-for="todo in todos" :todo="todo" :key="todo.id"></todo-item>
+  <transition-group tag="ul" class="todo-main" @before-enter="beforeEnter" @enter="enter" @leave="leave">
+
+      <todo-item v-for="todo in todos" :todo="todo" :key="todo.id">
+        <template #inputSlot="obj" >
+          <input type="checkbox" v-model="todos[obj.index].checked">
+        </template>
+
+        <template #spanSlot="obj" >
+          <span>{{obj.text}}</span>
+        </template>
+      </todo-item>
   </transition-group>
 </template>
 

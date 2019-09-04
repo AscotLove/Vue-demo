@@ -1,6 +1,6 @@
 <template>
   <div class="todo-header">
-    <input type="text" v-model="msg" @keydown.enter="addTodo">
+    <input type="text" v-model.trim="msg" @keydown.enter="addTodo">
   </div>
 </template>
 
